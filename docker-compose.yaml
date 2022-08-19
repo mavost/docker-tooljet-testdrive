@@ -9,15 +9,27 @@ services:
     image: ${FIRST_REFINED_IMAGE_ROOT}:${STACK_VERSION}
     container_name: ${STACK_NAME:-defstack}_alpine
     ports:
-     - 8080:80
+     - 8080:5000
     networks:
      - mydefaultstack
     environment:
      - EXAMPLE_VAR_VERBOSE=true
+     - FLASK_DEBUG=1
+     - FLASK_APP=app.py
+     - FLASK_RUN_HOST=0.0.0.0
+    volumes:
+     - ./compose/refined_image/code:/code
+    depends_on:
+     - redis
+  redis:
+    image: "redis:alpine"
+    container_name: ${STACK_NAME:-defstack}_redis
+#    ports:
+#     - 6379:6379
 #    volumes:
 #      - persistent_data:/persistent_data
-#    depends_on:
-#     - some_other_container
+    networks:
+     - mydefaultstack
 
 volumes:
   persistent_data:
