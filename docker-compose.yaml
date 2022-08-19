@@ -1,0 +1,28 @@
+# a sample compose file
+version: '3'
+services:
+  alpine:
+    build:
+      context: ./compose/refined_image
+      args:
+       - BASEIMAGE=${FIRST_BASE_IMAGE}
+    image: ${FIRST_REFINED_IMAGE_ROOT}:${STACK_VERSION}
+    container_name: ${STACK_NAME:-defstack}_alpine
+    ports:
+     - 8080:80
+    networks:
+     - mydefaultstack
+    environment:
+     - EXAMPLE_VAR_VERBOSE=true
+#    volumes:
+#      - persistent_data:/persistent_data
+#    depends_on:
+#     - some_other_container
+
+volumes:
+  persistent_data:
+    driver: local
+
+networks:
+  mydefaultstack:
+    name: mydefaultstack

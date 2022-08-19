@@ -1,0 +1,5 @@
+ARG BASEIMAGE
+FROM ${BASEIMAGE}
+
+ARG USER=root
+COPY --chown=${USER}:${USER} data /data
