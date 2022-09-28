@@ -1,40 +1,29 @@
-# a sample compose file
 version: '3'
-services:
-  alpine:
-    build:
-      context: ./compose/refined_image
-      args:
-       - BASEIMAGE=${FIRST_BASE_IMAGE}
-    image: ${FIRST_REFINED_IMAGE_ROOT}:${STACK_VERSION}
-    container_name: ${STACK_NAME:-defstack}_alpine
-    ports:
-     - 8080:5000
-    networks:
-     - mydefaultstack
-    environment:
-     - EXAMPLE_VAR_VERBOSE=true
-     - FLASK_DEBUG=1
-     - FLASK_APP=app.py
-     - FLASK_RUN_HOST=0.0.0.0
-    volumes:
-     - ./compose/refined_image/code:/code
-    depends_on:
-     - redis
-  redis:
-    image: "redis:alpine"
-    container_name: ${STACK_NAME:-defstack}_redis
-#    ports:
-#     - 6379:6379
-#    volumes:
-#      - persistent_data:/persistent_data
-    networks:
-     - mydefaultstack
 
-volumes:
-  persistent_data:
-    driver: local
+services:
+  tooljet_server:
+    tty: true
+    stdin_open: true
+    image: ${FIRST_BASE_IMAGE}
+    restart: unless-stopped
+    container_name: ${STACK_NAME:-defstack}_tooljet
+    env_file: .env
+    ports:
+      - 8083:${TOOLJET_SERVER_PORT}
+    environment:
+      - SERVE_CLIENT=true
+      - PORT=${TOOLJET_SERVER_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tooljet_server.rule=Host(`tooljet.${DOMAIN_NAME}`)"
+      - "traefik.http.services.tooljet_server.loadbalancer.server.port=${TOOLJET_SERVER_PORT}"
+    command: npm run start:prod
+    depends_on:
+      - postgresdb
+    networks:
+     - mydefaultstack
 
 networks:
   mydefaultstack:
     name: mydefaultstack
+    external: true
