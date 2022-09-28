@@ -1,4 +1,4 @@
-# A simple tooljet test drive
+# A simple ToolJet test drive
 
 *Date:* 2022-09-28  
 *Author:* MvS  
@@ -6,7 +6,7 @@
 
 ## Description
 
-Setting up a local instance of the tooljet framework, which persists its data in a
+Setting up a local instance of the [ToolJet](https://docs.tooljet.com/docs) framework, which persists its data in a
 pre-existing postgres-DB.
 
 ## How to use
@@ -33,6 +33,5 @@ local subdomain address.
     ```
 
 ![Screenshot of Tooljet login screen](images/login_screen.png "Screenshot of Tooljet login screen")
-
 6. Use <kbd>CTRL</kbd>+<kbd>C</kbd> to shut down the stack
 7. Invoke `make clean` to remove the stack
