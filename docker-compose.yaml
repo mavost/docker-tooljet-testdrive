@@ -15,11 +15,10 @@ services:
       - PORT=${TOOLJET_SERVER_PORT}
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.tooljet_server.tls=true"
       - "traefik.http.routers.tooljet_server.rule=Host(`tooljet.${DOMAIN_NAME}`)"
       - "traefik.http.services.tooljet_server.loadbalancer.server.port=${TOOLJET_SERVER_PORT}"
     command: npm run start:prod
-    depends_on:
-      - postgresdb
     networks:
      - mydefaultstack
 

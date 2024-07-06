@@ -38,3 +38,13 @@ local subdomain address.
 6. Use <kbd>CTRL</kbd>+<kbd>C</kbd> to shut down the stack
 
 7. Invoke `make clean` to remove the stack
+
+### Setup the Postgres backend credentials
+
+Run the following script with adjusted credentials manually using your database administration tool and
+refer to list item 1, above.
+
+```sql
+CREATE USER <tooljet_admin> WITH PASSWORD '<tooljet_access>';
+ALTER USER <tooljet_admin> CREATEDB;
+```
